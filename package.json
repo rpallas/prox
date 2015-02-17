@@ -1,0 +1,22 @@
+{
+  "name": "prox",
+  "version": "0.0.0",
+  "description": "simple web proxy",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/rpallas/prox.git"
+  },
+  "keywords": [
+    "proxy"
+  ],
+  "author": "Robbie Pallas",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/rpallas/prox/issues"
+  },
+  "homepage": "https://github.com/rpallas/prox"
+}
