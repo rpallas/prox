@@ -12,7 +12,7 @@ server.route({
   method: 'GET',
   path: '/',
   handler: function (request, reply) {
-    console.log('request: ', request);
+    console.info('request: ', request.path);
     Wreck.get(request.path, function (err, res, payload) {
       if (err) {
         console.error(err);
