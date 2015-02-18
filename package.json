@@ -18,5 +18,9 @@
   "bugs": {
     "url": "https://github.com/rpallas/prox/issues"
   },
-  "homepage": "https://github.com/rpallas/prox"
+  "homepage": "https://github.com/rpallas/prox",
+  "dependencies": {
+    "hapi": "~8.2.0",
+    "wreck": "~5.2.0"
+  }
 }
