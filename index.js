@@ -1,37 +1,43 @@
-var util = require('util'),
-    colors = require('colors'),
-    http = require('http'),
-    httpProxy = require('http-proxy');
+var Util = require('util');
+var HttpProxy = require('http-proxy');
+var Hapi = require('hapi');
 
-//require('colors');
+require('colors');
 
 var welcome = [
-  '#    # ##### ##### #####        #####  #####   ####  #    # #   #',
-  '#    #   #     #   #    #       #    # #    # #    #  #  #   # # ',
-  '######   #     #   #    # ##### #    # #    # #    #   ##     #  ',
-  '#    #   #     #   #####        #####  #####  #    #   ##     #  ',
-  '#    #   #     #   #            #      #   #  #    #  #  #    #  ',
-  '#    #   #     #   #            #      #    #  ####  #    #   #  '
+  '#####  #####   ####  #    #',
+  '#    # #    # #    #  #  # ',
+  '#    # #    # #    #   ##  ',
+  '#####  #####  #    #   ##  ',
+  '#      #   #  #    #  #  # ',
+  '#      #    #  ####  #    #'
 ].join('\n');
-
-util.puts(welcome.rainbow.bold);
+Util.puts(welcome.rainbow.dim);
 
 //
 // Basic Http Proxy Server
 //
-httpProxy.createServer({
-  target:'http://localhost:9003'
-}).listen(8003);
+var proxy = HttpProxy.createProxyServer({});
+
+proxy.on('error', function (err) {
+  console.log(err);
+  Util.puts('error: '.red.bold + err.red);
+});
 
 //
 // Target Http Server
 //
-http.createServer(function (req, res) {
-  util.puts('request successfully proxied to: '.blue + req.url.green.bold + '\n' + JSON.stringify(req.headers, true, 2).yellow);
-  res.writeHead(200, { 'Content-Type': 'text/plain' });
-  res.write('request successfully proxied to: ' + req.url + '\n' + JSON.stringify(req.headers, true, 2));
-  res.end();
-}).listen(9003);
+var port = 8090;
+var server = new Hapi.Server();
+server.connection({ port: port });
 
-util.puts('http proxy server'.blue + ' started '.green.bold + 'on port '.blue + '8003'.yellow);
-util.puts('http server '.blue + 'started '.green.bold + 'on port '.blue + '9003 '.yellow);
+server.start(function () {
+  Util.puts('proxy server '.blue + 'started '.green.bold + 'on port '.blue + port.toString().yellow);
+});
+
+var proxyRequest = function (request) {
+  Util.puts('proxying request for: '.blue.bold + request.url.href.yellow);
+  proxy.web(request.raw.req, request.raw.res, { target: request.url.href, hostRewrite: true });
+};
+
+server.route({ method: '*', path: '/{path*}', handler: proxyRequest});

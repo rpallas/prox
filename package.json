@@ -21,6 +21,8 @@
   "homepage": "https://github.com/rpallas/prox",
   "dependencies": {
     "http-proxy": "~1.9.0",
-    "colors": "~1.0.3"
+    "colors": "~1.0.3",
+    "hapi": "~8.4.0",
+    "wreck": "~5.2.0"
   }
 }
